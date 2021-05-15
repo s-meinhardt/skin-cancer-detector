@@ -1,0 +1,114 @@
+<!--{% extends "base.html" %}
+{% block title %}Translator{% endblock %}
+{% block content %} -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <title>Skin Cancer Detector</title>
+</head>
+<body style="margin-top:20; margin-left:20; margin-left:20; padding:0">
+
+	<br>
+	<br>
+
+	<div class="container">
+		<br>
+		<h1>Skin Cancer Detector</h1>
+		<br>
+		<p><b>This web page allows you to upload a picture of a pigmented skin lesion and to classify its type. Note that not all types are malignant. Some are harmless (benign) as for example the moles classified as type "nv".</b></p>
+		<form action="/detector" enctype=multipart/form-data method="post">
+			
+			
+		  	<label for="file">Please upload your picture!</label><br>
+		  	<p><input type="file" id="file" accept="image/*" onchange="loadFile(event)" name="file"/></p>
+		  	
+  			
+
+<!--  		<p><input type="file"  accept="image/*" name="image" id="file2"  onchange="loadFile(event)" style="display: none;"></p> 
+  			<p><input type="file"  accept="image/*" name="image" id="file2"  onchange="loadFile(event)"></p>
+			<p><label for="file2" style="cursor: pointer;">Upload Image</label></p>   -->
+			
+			<br>
+			<p><img src={{filepath}} alt={{filename}} id="output" width="400" /></p>
+
+			<script>
+			var loadFile = function(event) {
+				var image = document.getElementById('output');
+				image.src = URL.createObjectURL(event.target.files[0]);
+			};
+			</script>
+			<br>
+
+			<input type="submit" value="Submit">    
+   
+		</form>
+
+		<br>
+		<br>
+		The 3 most likely categories are:
+		<ol>
+		{% for result in results %}
+			<li><b>{{result[0]}}</b> with probability {{result[1]}}%</li>
+
+		{% endfor %}
+		</ol>
+		
+		See <a href="https://www.nature.com/articles/sdata2018161">here</a> for a detailed description of the HAM10000 dataset. The following description of the classes has been taken from ibid.
+		<br>
+		<br>
+
+		<b>akiec</b>
+		<p>
+			Actinic Keratoses (Solar Keratoses) and Intraepithelial Carcinoma (Bowen’s disease) are common non-invasive, variants of squamous cell carcinoma that can be treated locally without surgery. Some authors regard them as precursors of squamous cell carcinomas and not as actual carcinomas. There is, however, agreement that these lesions may progress to invasive squamous cell carcinoma – which is usually not pigmented. Both neoplasms commonly show surface scaling and commonly are devoid of pigment. Actinic keratoses are more common on the face and Bowen’s disease is more common on other body sites. Because both types are induced by UV-light the surrounding skin is usually typified by severe sun damaged except in cases of Bowen’s disease that are caused by human papilloma virus infection and not by UV. Pigmented variants exist for Bowen’s disease and for actinic keratoses, and both are included in this set. The dermatoscopic criteria of pigmented actinic keratoses and Bowen’s disease are described in detail by Zalaudek et al. and by Cameron et al.
+		</p>
+		<br>
+
+		<b>bcc</b>
+		<p>
+			Basal cell carcinoma is a common variant of epithelial skin cancer that rarely metastasizes but grows destructively if untreated. It appears in different morphologic variants (flat, nodular, pigmented, cystic), which are described in more detail by Lallas et al. 
+		</p>
+		<br>
+
+		<b>bkl</b>
+		<p>
+			"Benign keratosis" is a generic class that includes seborrheic keratoses ("senile wart"), solar lentigo - which can be regarded a flat variant of seborrheic keratosis - and lichen-planus like keratoses (LPLK), which corresponds to a seborrheic keratosis or a solar lentigo with inflammation and regression. The three subgroups may look different dermatoscopically, but we grouped them together because they are similar biologically and often reported under the same generic term histopathologically. From a dermatoscopic view, lichen planus-like keratoses are especially challenging because they can show morphologic features mimicking melanoma and are often biopsied or excised for diagnostic reasons. The dermatoscopic appearance of seborrheic keratoses varies according to anatomic site and type.
+		</p>
+		<br>
+
+		<b>df</b>
+		<p>
+			Dermatofibroma is a benign skin lesion regarded as either a benign proliferation or an inflammatory reaction to minimal trauma. The most common dermatoscopic presentation is reticular lines at the periphery with a central white patch denoting fibrosis.
+		</p>
+		<br>
+
+		<b>nv</b>
+		<p>
+			Melanocytic nevi, usually called "moles", are benign neoplasms of melanocytes and appear in a myriad of variants, which all are included in our series. The variants may differ significantly from a dermatoscopic point of view. In contrast to melanoma they are usually symmetric with regard to the distribution of color and structure.
+		</p>
+		<br>
+
+		<b>mel</b>
+		<p>
+			Melanoma is a malignant neoplasm derived from melanocytes that may appear in different variants. If excised in an early stage it can be cured by simple surgical excision. Melanomas can be invasive or non-invasive (in situ). We included all variants of melanoma including melanoma in situ, but did exclude non-pigmented, subungual, ocular or mucosal melanoma. Melanomas are usually, albeit not always, chaotic, and some melanoma specific criteria depend on anatomic site.
+		</p>
+		<br>
+
+		<b>vasc</b>
+		<p>
+			Vascular skin lesions in the dataset range from cherry angiomas to angiokeratomas and pyogenic granulomas. Hemorrhage is also included in this category.
+			Angiomas are dermatoscopically characterized by red or purple color and solid, well circumscribed structures known as red clods or lacunes.
+		</p>
+	
+	</div>
+
+	<!--{% endblock %}-->
+
+	
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
+</html>

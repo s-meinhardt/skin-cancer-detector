@@ -1,0 +1,13 @@
+version: "3.8"
+services:
+        web:
+                image: meinhardt4ai/skin-cancer-detector:web_app
+                depends_on:
+                        - detector
+                ports:
+                        - "5005:5000"
+                network_mode: "host"
+        detector:
+                image: meinhardt4ai/skin-cancer-detector:latest
+                ports:
+                        - "8501:8501"       
